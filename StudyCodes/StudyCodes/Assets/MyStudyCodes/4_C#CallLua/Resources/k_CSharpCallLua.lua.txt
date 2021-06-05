@@ -1,0 +1,26 @@
+Name = "DIUDIU"
+Hp = 200.1
+Sp = 100
+Exp = 90
+isDie = false
+
+person ={
+	Name = "DIUDIU",
+	hp = Hp,
+	sp = Sp,
+	isDie = isDie,
+}
+
+money = {
+	num = 200,300,400,500,
+	type = "gold",
+	Show = function(self,a,b,c)
+		print(a,b,c)
+	end
+}
+
+money[15] = 666
+
+function money:Consume(a,b)
+	print("Consume!")
+end
