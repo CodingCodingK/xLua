@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/MyStudyCodes/4_C#CallLua/k_CSharpCallLua.unity
+- path: Assets/MyStudyCodes/5_LuaCalC#/k_LuaCallCSharp.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

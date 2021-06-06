@@ -37,6 +37,7 @@ namespace XLua
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.Pedding>(translator.PushXLuaTestPedding, translator.Get, translator.UpdateXLuaTestPedding);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.MyStruct>(translator.PushXLuaTestMyStruct, translator.Get, translator.UpdateXLuaTestMyStruct);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.PushAsTableStruct>(translator.PushXLuaTestPushAsTableStruct, translator.Get, translator.UpdateXLuaTestPushAsTableStruct);
+				translator.RegisterPushAndGetAndUpdate<PeopleEnum>(translator.PushPeopleEnum, translator.Get, translator.UpdatePeopleEnum);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.TestEnum>(translator.PushTutorialTestEnum, translator.Get, translator.UpdateTutorialTestEnum);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.MyEnum>(translator.PushXLuaTestMyEnum, translator.Get, translator.UpdateXLuaTestMyEnum);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.DerivedClass.TestEnumInner>(translator.PushTutorialDerivedClassTestEnumInner, translator.Get, translator.UpdateTutorialDerivedClassTestEnumInner);
@@ -771,6 +772,90 @@ namespace XLua
             }
         }
         
+        int PeopleEnum_TypeID = -1;
+		int PeopleEnum_EnumRef = -1;
+        
+        public void PushPeopleEnum(RealStatePtr L, PeopleEnum val)
+        {
+            if (PeopleEnum_TypeID == -1)
+            {
+			    bool is_first;
+                PeopleEnum_TypeID = getTypeId(L, typeof(PeopleEnum), out is_first);
+				
+				if (PeopleEnum_EnumRef == -1)
+				{
+				    Utils.LoadCSTable(L, typeof(PeopleEnum));
+				    PeopleEnum_EnumRef = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
+				}
+				
+            }
+			
+			if (LuaAPI.xlua_tryget_cachedud(L, (int)val, PeopleEnum_EnumRef) == 1)
+            {
+			    return;
+			}
+			
+            IntPtr buff = LuaAPI.xlua_pushstruct(L, 4, PeopleEnum_TypeID);
+            if (!CopyByValue.Pack(buff, 0, (int)val))
+            {
+                throw new Exception("pack fail fail for PeopleEnum ,value="+val);
+            }
+			
+			LuaAPI.lua_getref(L, PeopleEnum_EnumRef);
+			LuaAPI.lua_pushvalue(L, -2);
+			LuaAPI.xlua_rawseti(L, -2, (int)val);
+			LuaAPI.lua_pop(L, 1);
+			
+        }
+		
+        public void Get(RealStatePtr L, int index, out PeopleEnum val)
+        {
+		    LuaTypes type = LuaAPI.lua_type(L, index);
+            if (type == LuaTypes.LUA_TUSERDATA )
+            {
+			    if (LuaAPI.xlua_gettypeid(L, index) != PeopleEnum_TypeID)
+				{
+				    throw new Exception("invalid userdata for PeopleEnum");
+				}
+				
+                IntPtr buff = LuaAPI.lua_touserdata(L, index);
+				int e;
+                if (!CopyByValue.UnPack(buff, 0, out e))
+                {
+                    throw new Exception("unpack fail for PeopleEnum");
+                }
+				val = (PeopleEnum)e;
+                
+            }
+            else
+            {
+                val = (PeopleEnum)objectCasters.GetCaster(typeof(PeopleEnum))(L, index, null);
+            }
+        }
+		
+        public void UpdatePeopleEnum(RealStatePtr L, int index, PeopleEnum val)
+        {
+		    
+            if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
+            {
+			    if (LuaAPI.xlua_gettypeid(L, index) != PeopleEnum_TypeID)
+				{
+				    throw new Exception("invalid userdata for PeopleEnum");
+				}
+				
+                IntPtr buff = LuaAPI.lua_touserdata(L, index);
+                if (!CopyByValue.Pack(buff, 0,  (int)val))
+                {
+                    throw new Exception("pack fail for PeopleEnum ,value="+val);
+                }
+            }
+			
+            else
+            {
+                throw new Exception("try to update a data with lua type:" + LuaAPI.lua_type(L, index));
+            }
+        }
+        
         int TutorialTestEnum_TypeID = -1;
 		int TutorialTestEnum_EnumRef = -1;
         
@@ -1100,6 +1185,12 @@ namespace XLua
 				translator.PushXLuaTestPushAsTableStruct(L, array[index]);
 				return true;
 			}
+			else if (type == typeof(PeopleEnum[]))
+			{
+			    PeopleEnum[] array = obj as PeopleEnum[];
+				translator.PushPeopleEnum(L, array[index]);
+				return true;
+			}
 			else if (type == typeof(Tutorial.TestEnum[]))
 			{
 			    Tutorial.TestEnum[] array = obj as Tutorial.TestEnum[];
@@ -1187,6 +1278,12 @@ namespace XLua
 			else if (type == typeof(XLuaTest.PushAsTableStruct[]))
 			{
 			    XLuaTest.PushAsTableStruct[] array = obj as XLuaTest.PushAsTableStruct[];
+				translator.Get(L, obj_idx, out array[array_idx]);
+				return true;
+			}
+			else if (type == typeof(PeopleEnum[]))
+			{
+			    PeopleEnum[] array = obj as PeopleEnum[];
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}

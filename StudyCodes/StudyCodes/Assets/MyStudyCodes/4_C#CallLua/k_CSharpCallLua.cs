@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class k_CSharpCallLua : MonoBehaviour
 {
 	private LuaEnv env = new LuaEnv();
 
-    // Start is called before the first frame update
+	// Start is called before the first frame update
     void Start()
     {
 	    env.DoString("require 'k_CSharpCallLua'");
@@ -93,9 +94,22 @@ public class k_CSharpCallLua : MonoBehaviour
 
         #endregion
 
+        #region 用Action接function
 
-        env.Dispose();
+        print("============ 用Action接function ============");
+
+        var add = env.Global.Get<Add>("add");
+        print(add(15, 20));
+
+        add = null;// for dispose
+
+        #endregion
+
+        //env.Dispose();
     }
+
+    [CSharpCallLua]
+    public delegate int Add(int a, int b);
 
     [CSharpCallLua]
     public interface IMoney
@@ -113,6 +127,4 @@ public class k_CSharpCallLua : MonoBehaviour
         public double sp;
 	    public int Miss;
     }
-
-   
 }

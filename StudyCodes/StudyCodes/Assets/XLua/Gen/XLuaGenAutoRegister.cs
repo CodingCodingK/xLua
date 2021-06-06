@@ -22,6 +22,12 @@ namespace XLua.CSObjectWrap
         static void wrapInit0(LuaEnv luaenv, ObjectTranslator translator)
         {
         
+            translator.DelayWrapLoader(typeof(PeopleEnum), PeopleEnumWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ChooseMoney), ChooseMoneyWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(object), SystemObjectWrap.__Register);
         
         

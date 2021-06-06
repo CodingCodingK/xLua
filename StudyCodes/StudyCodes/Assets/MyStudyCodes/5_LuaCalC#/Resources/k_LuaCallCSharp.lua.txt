@@ -1,0 +1,17 @@
+CS.UnityEngine.GameObject("New() by lua")
+print(CS.UnityEngine.Time.deltaTime)
+CS.UnityEngine.Time.timeScale = 0.5
+
+local camera = CS.UnityEngine.GameObject.Find("Main Camera")
+camera.name = "update by Lua"
+local cameraCom = camera:GetComponent("Camera")
+CS.UnityEngine.GameObject.Destroy(cameraCom)
+
+local MoneyEnum = CS.MoneyEnum
+local ChooseMoney = CS.k_LuaCallCSharp.ChooseMoney()	-- 成员方法调用
+
+local PeopleEnum = CS.PeopleEnum
+print(ChooseMoney:GetMoney(MoneyEnum.golden))
+
+print(MoneyEnum.golden)
+print(PeopleEnum.__CastFrom(1))
